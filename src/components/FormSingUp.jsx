@@ -1,15 +1,20 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import FormGroup  from '@mui/material/FormGroup';
 import  FormControlLabel from '@mui/material/FormControlLabel';
-function FormSingUp (){
+function FormSingUp ({handleSubmit}){
+    
     const [name,setName]=useState("")
-    useEffect(() =>{
-        console.log("name cambio:", name);
-    },[name])
-    return <form>
+    const [lastName,setLastName]=useState("")
+    const [email,setEmail]=useState("")
+    const[prom,setProm]=useState(true)
+    const[nov,setNov]=useState(true)
+    return <form onSubmit={(e)=>{
+        e.preventDefault()
+        handleSubmit({name,lastName,email,prom,nov})
+    }}>
        
         <TextField 
         id="name" 
@@ -17,10 +22,7 @@ function FormSingUp (){
         variant="outlined" 
         fullWidth 
         margin='normal'
-        onChange={(e)=>{
-            console.log(e.target.value);
-            setName(e.target.value);
-        }}
+        onChange={(e)=>setName(e.target.value)}
         value={name}
         />
         <TextField 
@@ -30,6 +32,8 @@ function FormSingUp (){
         color='error' 
         fullWidth 
         margin='normal'
+        value={lastName}
+        onChange={(e)=>setLastName(e.target.value)}
         />
         <TextField 
         id="email" 
@@ -37,22 +41,24 @@ function FormSingUp (){
         variant="outlined"  
         fullWidth 
         margin='normal'
+        value={email}
+        onChange={(e)=>setEmail(e.target.value)}
         />
     <FormGroup>
         <FormControlLabel 
         control={
-        <Switch defaultChecked/>
+        <Switch  checked={prom} onChange={(e)=>setProm(e.target.checked)}/>
         } 
         label="promociones"
         />
         <FormControlLabel 
         control={
-        <Switch defaultChecked/>
+        <Switch  checked={nov} onChange={(e)=>setNov(e.target.checked)}/>
         } 
         label="novedades"
         />
     </FormGroup>
-        <Button variant="contained" color="error">registrarse</Button>
+        <Button variant="contained" type='submit' color="error">registrarse</Button>
 
     </form>
 }
